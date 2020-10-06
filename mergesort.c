@@ -1,9 +1,54 @@
 #include<stdio.h>
 
-
-void print_new_mids(int arr[], int arr_size)
+void mergesort(int arr[], int left[], int left_size, int right[], int right_size)
 {
+	for(int x =0;x<left_size;x++){printf("%d ", left[x]);}
+	for(int x =0;x<right_size;x++){printf("%d ", right[x]);}
 
+	int i =0;
+	int j =0;
+	int c[left_size+right_size];
+	int temp =0;
+	
+	while(i < left_size && j < right_size)
+        {
+                if(left[i] < right[j])
+                {
+			arr[i+j] = left[i];
+                        i++;
+                }
+                else
+                {
+                        arr[i+j] = right[j];
+                        j++;
+                }
+        }
+
+
+        while(i<left_size)
+        {
+                arr[i+j] = left[i];
+                i++;
+        }
+
+        while(j<right_size)
+        {
+                arr[i+j] = right[j];
+                j++;
+        }
+
+        for(int i =0;i<left_size+right_size;i++)
+        {
+                printf("%d- ", arr[i]);
+
+        }
+
+        printf("\n");
+}
+
+void split(int arr[], int arr_size)
+{
+	
 	if(arr_size > 1)
 	{
 	int mid = arr_size / 2;
@@ -26,29 +71,13 @@ void print_new_mids(int arr[], int arr_size)
 
 		printf("\n");
 		
-		int left_size = sizeof(left)/sizeof(int);
-		int right_size = sizeof(right)/sizeof(int);
-
-/*		if(left_size == 1 && right_size == 1)
-		{
-			if(left[0] > right[0])
-			{
-				int temp = right[0];
-				right[0] = left[0];
-				left[0] = temp;
-			}
-
-			printf("\nSorted New small array is : ");
-			int new_array[] = {left[0], right[0]};
-			for(int i =0;i<2;i++)
-			{
-				printf("%d ", new_array[i]);
-			}
-		}*/
-
-		print_new_mids(left, sizeof(left)/sizeof(int));
-		print_new_mids(right, sizeof(right)/sizeof(int));
-		printf("\nMerge left of size %ld and right of size %ld\n", sizeof(left)/sizeof(int), sizeof(right)/sizeof(int));
+		split(left, mid);
+		split(right, arr_size-mid);
+		mergesort(arr, left, mid, right, arr_size-mid);
+	}
+	else
+	{
+		return;
 	}
 
 }
@@ -56,11 +85,9 @@ void print_new_mids(int arr[], int arr_size)
 
 int main()
 {
-	int arr[] = {6, 3, 8, 5, 2, 7, 4, 1, 0};
+	int arr[] = {8, 3, 1, 4, 5, 6, 0};
 
 	int arr_size = sizeof(arr)/sizeof(int);
 
-//	printf("\n");
-
-	print_new_mids(arr, arr_size);
+	split(arr, arr_size);
 }
